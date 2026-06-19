@@ -1,8 +1,16 @@
-import { TelegramCompleteRequest } from '@egorcolgcinema/contracts/gen/auth'
+import {
+	TelegramCompleteRequest,
+	TelegramCompleteResponse
+} from '@egorcolgcinema/contracts/gen/auth'
 import { authClient } from '@infrastructure/grpc/auth.client'
 import { TelegrafContext } from '@shared/interfaces'
-import { lastValueFrom } from 'rxjs'
 import { Telegraf } from 'telegraf'
+
+function callUnary<T>(method, request) {
+	return new Promise<T>((resolve, reject) => {
+		method(request, (err, res) => (err ? reject(err) : resolve(res)))
+	})
+}
 
 export function registerContactHandler(bot: Telegraf<TelegrafContext>) {
 	bot.on('contact', async ctx => {
@@ -18,8 +26,9 @@ export function registerContactHandler(bot: Telegraf<TelegrafContext>) {
 			phone
 		}
 
-		const { sessionId } = await lastValueFrom(
-			authClient.telegramComplete(request)
+		const { sessionId } = await callUnary<TelegramCompleteResponse>(
+			authClient.telegramComplete.bind(authClient),
+			request
 		)
 
 		await ctx.reply('Регистрация завершена успешно!', {
