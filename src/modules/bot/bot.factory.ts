@@ -1,10 +1,19 @@
 import { CONFIG } from '@config'
-import { Telegraf } from 'telegraf'
+import { Session, TelegrafContext } from '@shared/interfaces'
+import { session, Telegraf } from 'telegraf'
 
 import { registerBotHandlers } from './handlers'
 
 export function createBot() {
-	const bot = new Telegraf(CONFIG.BOT_TOKEN)
+	const bot = new Telegraf<TelegrafContext>(CONFIG.BOT_TOKEN)
+
+	bot.use(
+		session({
+			defaultSession: (): Session => ({
+				id: undefined
+			})
+		})
+	)
 
 	registerBotHandlers(bot)
 
