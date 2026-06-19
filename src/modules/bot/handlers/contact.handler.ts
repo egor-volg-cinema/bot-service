@@ -1,10 +1,38 @@
+import { TelegramCompleteRequest } from '@egorcolgcinema/contracts/gen/auth'
+import { authClient } from '@infrastructure/grpc/auth.client'
 import { TelegrafContext } from '@shared/interfaces'
+import { lastValueFrom } from 'rxjs'
 import { Telegraf } from 'telegraf'
 
 export function registerContactHandler(bot: Telegraf<TelegrafContext>) {
 	bot.on('contact', async ctx => {
 		const phone = ctx.message.contact.phone_number
 
-		console.log('ctx', phone)
+		if (!ctx.chat.id || !ctx.session.id)
+			return ctx.reply(
+				'Что-то пошло не так! Пожалуйста, попробуйте повторить процесс на сайте.'
+			)
+
+		const request: TelegramCompleteRequest = {
+			sessionId: ctx.session.id,
+			phone
+		}
+
+		const { sessionId } = await lastValueFrom(
+			authClient.telegramComplete(request)
+		)
+
+		await ctx.reply('Регистрация завершена успешно!', {
+			reply_markup: {
+				inline_keyboard: [
+					[
+						{
+							text: 'Вернуться на сайт',
+							url: `https://egorcolgcinema.com/auth/tg-finalize?sessionId=${sessionId}`
+						}
+					]
+				]
+			}
+		})
 	})
 }
