@@ -40,7 +40,8 @@ export function registerContactHandler(bot: Telegraf<TelegrafContext>) {
 							url: `https://egorcolgcinema.com/auth/tg-finalize?sessionId=${sessionId}`
 						}
 					]
-				]
+				],
+				remove_keyboard: true
 			}
 		})
 	})
