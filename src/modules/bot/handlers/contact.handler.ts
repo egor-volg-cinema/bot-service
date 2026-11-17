@@ -1,7 +1,7 @@
-import {
+import type {
 	TelegramCompleteRequest,
 	TelegramCompleteResponse
-} from '@egorcolgcinema/contracts/gen/auth'
+} from '@teacinema/contracts/gen/ts/auth'
 import { authClient } from '@infrastructure/grpc/auth.client'
 import { TelegrafContext } from '@shared/interfaces'
 import { Telegraf } from 'telegraf'

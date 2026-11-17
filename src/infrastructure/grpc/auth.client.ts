@@ -1,9 +1,9 @@
 import { CONFIG } from '@config'
-import { PROTO_PATH } from '@egorcolgcinema/contracts'
+import { PROTO_PATHS } from '@teacinema/contracts'
 import { credentials, loadPackageDefinition } from '@grpc/grpc-js'
 import { loadSync } from '@grpc/proto-loader'
 
-const packageDef = loadSync(PROTO_PATH.AUTH, {
+const packageDef = loadSync(PROTO_PATHS.AUTH, {
 	keepCase: false,
 	longs: String,
 	enums: String,
