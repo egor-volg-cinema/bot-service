@@ -1,7 +1,7 @@
 import { CONFIG } from '@config'
-import { PROTO_PATHS } from '@teacinema/contracts'
 import { credentials, loadPackageDefinition } from '@grpc/grpc-js'
 import { loadSync } from '@grpc/proto-loader'
+import { PROTO_PATHS } from '@teacinema/contracts'
 
 const packageDef = loadSync(PROTO_PATHS.AUTH, {
 	keepCase: false,
