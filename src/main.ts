@@ -1,4 +1,6 @@
-import { createBot } from '@modules/bot/bot.factory'
+import { createBot } from "@modules/bot/bot.factory"
+
+ 
 
 async function bootstrap() {
 	try {
